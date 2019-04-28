@@ -29,6 +29,17 @@ pipeline {
             }
         }
 
+        stage("Code coverage") {
+            steps {
+                sh "./mvnw package"
+                publishHTML (target: [
+                reportDir: 'target/jacoco-report',
+                reportFiles: 'index.html',
+                reportName: "JaCoCo Report"
+                ])
+            }
+        }
+
         // stage('Example') {
         //     environment { NAME = 'Rafal' }
         //     when { expression { return params.DEBUG_BUILD } }
