@@ -10,18 +10,18 @@ pipeline {
     }
     stages {
 
-        stage("Checkout") {
-            steps {
-                git url: 'https://github.com/pradyumna04/test.git'
-            }
-        }
-
-        //stage("Compile") {
+        //stage("Checkout") {
         //    steps {
-        //        sh "./mvnw compile"
+        //        git url: 'https://github.com/pradyumna04/test.git'
         //    }
-        //
-        // }
+        //}
+
+        stage("Compile") {
+            steps {
+                sh "./mvnw compile"
+            }
+
+         }
 
         stage("Unit test") {
             steps {
