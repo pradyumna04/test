@@ -3,6 +3,9 @@
 pipeline {
     agent any
     //triggers { cron('* * * * *') }
+    triggers {
+        pollSCM('* * * * *')
+    }
     options { timeout(time: 5) }
     parameters {
         booleanParam(name: 'DEBUG_BUILD', defaultValue: true,
@@ -36,6 +39,17 @@ pipeline {
                 reportDir: 'target/jacoco-report',
                 reportFiles: 'index.html',
                 reportName: "JaCoCo Report"
+                ])
+            }
+        }
+
+        stage("Static code analysis") {
+            steps {
+                sh "./mvnw checkstyle:check"
+                publishHTML (target: [
+                reportDir: 'target',
+                reportFiles: 'checkstyle-result.xml',
+                reportName: "Checkstyle Report"
                 ])
             }
         }
