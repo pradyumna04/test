@@ -54,6 +54,12 @@ pipeline {
             }
         }
 
+        stage("Docker build") {
+            steps {
+                sh "docker build -t prad/calculator ."
+            }
+        }
+
         // stage('Example') {
         //     environment { NAME = 'Rafal' }
         //     when { expression { return params.DEBUG_BUILD } }
