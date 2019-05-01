@@ -60,6 +60,27 @@ pipeline {
             }
         }
 
+         //stage("Docker push") {
+         //           steps {
+         //               sh "docker login -u un -p pwd"
+         //               sh "docker push pradyumna04/calculator"
+         //           }
+         //}
+
+        stage("Deploy to staging") {
+            steps {
+                sh "docker run -d --rm -p 8765:8080 --name calculator pradyumna04/calculator"
+            }
+        }
+
+        stage("Acceptance test") {
+            steps {
+                sleep 60
+                sh "./acceptance_test.sh"
+            }
+        }
+
+
         // stage('Example') {
         //     environment { NAME = 'Rafal' }
         //     when { expression { return params.DEBUG_BUILD } }
@@ -76,5 +97,10 @@ pipeline {
 
     }
 
-    post { always { echo 'I will always say Hello again!' } }
+    post {
+        always {
+            echo 'I will always say Hello again!'
+            sh "docker stop calculator"
+        }
+    }
 }
