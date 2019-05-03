@@ -73,13 +73,17 @@ pipeline {
             steps {
                 //sh "docker run -d --rm -p 8765:8080 --name calculator pradyumna04/calculator"
                 sh "docker-compose up -d"
+
             }
         }
 
         stage("Acceptance test") {
             steps {
-                sleep 60
-                sh "./acceptance_tests.sh"
+                //sleep 60
+                //sh "./acceptance_tests.sh"
+                sh "docker-compose -f docker-compose.yml -f acceptancev2/docker-compose-acceptance.yml build"
+                sh "docker-compose -f docker-compose.yml -f acceptancev2/docker-compose-acceptance.yml -p acceptance up -d"
+                sh 'test $(docker wait acceptance_test_1) -eq 0'
             }
         }
 
@@ -105,6 +109,7 @@ pipeline {
             echo 'I will always say Hello again!'
             //sh "docker stop calculator"
             sh "docker-compose down"
+            sh "docker-compose -f docker-compose.yml -f acceptancev2/docker-compose-acceptance.yml -p acceptance down"
         }
     }
 }
