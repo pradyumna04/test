@@ -2,6 +2,7 @@ version: "3"
 services:
  calculator:
   build: .
+  image: pradyumna04/calculator
   ports:
    - 8080
  redis:

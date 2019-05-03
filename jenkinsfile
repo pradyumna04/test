@@ -56,7 +56,8 @@ pipeline {
 
         stage("Docker build") {
             steps {
-                sh "docker build -t prad/calculator ."
+                //sh "docker build -t prad/calculator ."
+                sh "docker-compose build"
             }
         }
 
@@ -64,12 +65,14 @@ pipeline {
          //           steps {
          //               sh "docker login -u un -p pwd"
          //               sh "docker push pradyumna04/calculator"
+         //               sh "docker-compose push"
          //           }
          //}
 
         stage("Deploy to staging") {
             steps {
-                sh "docker run -d --rm -p 8765:8080 --name calculator pradyumna04/calculator"
+                //sh "docker run -d --rm -p 8765:8080 --name calculator pradyumna04/calculator"
+                sh "docker-compose up -d"
             }
         }
 
@@ -100,7 +103,8 @@ pipeline {
     post {
         always {
             echo 'I will always say Hello again!'
-            sh "docker stop calculator"
+            //sh "docker stop calculator"
+            sh "docker-compose down"
         }
     }
 }
