@@ -84,6 +84,7 @@ pipeline {
                 sh "docker-compose -f docker-compose.yml -f acceptancev2/docker-compose-acceptance.yml build"
                 sh "docker-compose -f docker-compose.yml -f acceptancev2/docker-compose-acceptance.yml -p acceptance up -d"
                 sh 'test $(docker wait acceptance_test_1) -eq 0'
+                sh "mvn test -Pacceptance-tests  -Dcalculator.url=http://localhost:8080"
             }
         }
 
